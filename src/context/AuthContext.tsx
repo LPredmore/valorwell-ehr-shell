@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -35,6 +35,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  // Add iframe communication to share auth state
+  const notifyChildFrames = useCallback((authData: any) => {
+    // Find all iframes and send auth state
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage({
+          target: 'valorwell-microfrontend',
+          type: 'auth-state',
+          data: authData
+        }, 'https://valorwell-ehr-staff-profile.lovable.app');
+      }
+    });
+  }, []);
+
+  // Call this whenever auth state changes
+  useEffect(() => {
+    if (user) {
+      notifyChildFrames({
+        user,
+        token: session?.access_token,
+        isAuthenticated: true
+      });
+    }
+  }, [user, session, notifyChildFrames]);
 
   useEffect(() => {
     // Set up auth state listener

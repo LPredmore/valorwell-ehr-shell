@@ -18,6 +18,7 @@ import { useCptCodes, useDeleteCptCode, useUpdateCptCode, CptCode } from '@/hook
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronRight } from 'lucide-react';
+import { IframeContainer } from '@/components/IframeContainer';
 
 
 const CptCodesManagement = () => {
@@ -757,29 +758,14 @@ const Settings = () => {
         </TabsContent>
 
         <TabsContent value="documentation" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Documentation Settings</CardTitle>
-              <p className="text-muted-foreground">Manage your practice's documentation and templates</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium mb-2">Form Templates</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Create and manage custom forms for session notes, assessments, and other documentation.
-                  </p>
-                  <Button 
-                    onClick={() => window.location.href = '/templates'} 
-                    variant="outline"
-                  >
-                    <FileText className="mr-2 h-4 w-4" />
-                    Manage Templates
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="h-[600px]">
+            <IframeContainer 
+              title="Documentation Management"
+              initialSrc=""
+              allowFullscreen={true}
+              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="security" className="mt-6">

@@ -146,15 +146,3 @@ class UsageAnalyticsService {
 }
 
 export const usageAnalytics = new UsageAnalyticsService();
-
-// Calendar-specific tracking for deprecation analysis
-export const trackCalendarUsage = {
-  appointmentCalendar: () => usageAnalytics.trackComponentUsage('AppointmentCalendar'),
-  appointmentModal: () => usageAnalytics.trackComponentUsage('AppointmentModal'),
-  availabilityMenu: () => usageAnalytics.trackComponentUsage('AvailabilityMenu'),
-  availabilityForm: () => usageAnalytics.trackComponentUsage('AvailabilityForm'),
-  useAppointments: () => usageAnalytics.trackFunctionCall('useAppointments', 'calendar-hooks'),
-  useClinicianAvailability: () => usageAnalytics.trackFunctionCall('useClinicianAvailability', 'calendar-hooks'),
-  useEnterpriseAppointments: () => usageAnalytics.trackFunctionCall('useEnterpriseAppointments', 'calendar-hooks'),
-  appointmentService: (method: string) => usageAnalytics.trackFunctionCall(method, 'appointmentService')
-};

@@ -3,7 +3,6 @@ import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { logger, performanceLogger } from '@/utils/loggingService';
-import { handleAppointmentError, ERROR_CODES } from '@/utils/errorHandling';
 
 interface FormSubmissionData {
   templateId: string;
@@ -67,13 +66,11 @@ export const useFormSubmission = () => {
         return result;
       } catch (error) {
         timer.end({ success: false });
-        const appError = handleAppointmentError(error);
         
         logger.error('Form submission failed', {
           component: 'useFormSubmission',
           action: 'submit',
-          templateId: data.templateId,
-          errorCode: appError.code
+          templateId: data.templateId
         }, error as Error);
         
         throw error;
@@ -91,17 +88,14 @@ export const useFormSubmission = () => {
       });
     },
     onError: (error) => {
-      const appError = handleAppointmentError(error);
-      
       logger.error('Form submission mutation error', {
-        component: 'useFormSubmission',
-        errorCode: appError.code
+        component: 'useFormSubmission'
       }, error as Error);
 
       toast({
         variant: 'destructive',
         title: 'Submission Failed',
-        description: appError.message,
+        description: 'Failed to submit form. Please try again.',
       });
     },
   });

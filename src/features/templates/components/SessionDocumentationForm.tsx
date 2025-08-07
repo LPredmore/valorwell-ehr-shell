@@ -12,7 +12,6 @@ import { useFormSubmission } from '../hooks/useFormSubmission';
 import { useUpdateAppointment } from '@/hooks/useAppointments';
 import { useToast } from '@/hooks/use-toast';
 import { logger, performanceLogger } from '@/utils/loggingService';
-import { templateDebugger } from '@/utils/templateDebugger';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 interface Template {

@@ -18,18 +18,12 @@ export const Login: React.FC = () => {
 
   // Handle OAuth callback detection and redirect
   useEffect(() => {
-    console.log('[LOGIN_PAGE] Component mounted');
-    console.log('[LOGIN_PAGE] Current URL:', window.location.href);
-    console.log('[LOGIN_PAGE] URL hash:', window.location.hash);
-    
     // Check if OAuth tokens are present in hash
     if (window.location.hash.includes('access_token')) {
-      console.log('[LOGIN_PAGE] OAuth tokens detected in URL hash - waiting for auth state update');
       setWaitingForOAuth(true);
       
       // Set up a timeout for redirect in case auth state doesn't update
       const redirectTimeout = setTimeout(() => {
-        console.log('[LOGIN_PAGE] Timeout reached - forcing redirect to dashboard');
         window.location.href = '/dashboard';
       }, 5000);
       
@@ -40,14 +34,12 @@ export const Login: React.FC = () => {
   // Handle redirect after successful OAuth authentication
   useEffect(() => {
     if (user && waitingForOAuth) {
-      console.log('[LOGIN_PAGE] OAuth authentication complete, redirecting to dashboard');
       window.location.href = '/dashboard';
     }
   }, [user, waitingForOAuth]);
 
   // Redirect if already authenticated
   if (user && !loading) {
-    console.log('[LOGIN_PAGE] User authenticated, redirecting to dashboard');
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -67,18 +59,12 @@ export const Login: React.FC = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    console.log('[GOOGLE_SIGNIN] Starting Google sign-in process...');
     setIsSubmitting(true);
     
     try {
-      // Log current auth state before attempting sign-in
-      const { data: currentSession } = await supabase.auth.getSession();
-      console.log('[GOOGLE_SIGNIN] Current session before OAuth:', currentSession);
-      
       const redirectUrl = `${window.location.origin}/login`;
-      console.log('[GOOGLE_SIGNIN] Redirect URL:', redirectUrl);
       
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
@@ -89,26 +75,8 @@ export const Login: React.FC = () => {
         }
       });
       
-      console.log('[GOOGLE_SIGNIN] OAuth response data:', data);
-      
       if (error) {
-        console.error('[GOOGLE_SIGNIN] OAuth error:', {
-          message: error.message,
-          status: error.status,
-          details: error
-        });
-        
-        // Try to get more specific error information
-        if (error.message.includes('unauthorized_client')) {
-          console.error('[GOOGLE_SIGNIN] Unauthorized client - check Google OAuth configuration');
-        } else if (error.message.includes('invalid_request')) {
-          console.error('[GOOGLE_SIGNIN] Invalid request - check redirect URLs in Google Console');
-        } else if (error.message.includes('access_denied')) {
-          console.error('[GOOGLE_SIGNIN] Access denied - user cancelled or permissions issue');
-        }
-      } else {
-        console.log('[GOOGLE_SIGNIN] OAuth initiated successfully');
-        // Note: The actual sign-in completion happens in the callback
+        console.error('[GOOGLE_SIGNIN] OAuth error:', error);
       }
       
     } catch (exception) {

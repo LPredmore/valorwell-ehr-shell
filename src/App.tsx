@@ -28,10 +28,6 @@ import { SessionDocumentation } from '@/pages/SessionDocumentation';
 import { AddClientInfo } from '@/pages/AddClientInfo';
 import ClientDashboard from '@/pages/ClientDashboard';
 
-// Template page imports
-import { TemplatesPage } from '@/features/templates/pages/TemplatesPage';
-import { CreateTemplatePage } from '@/features/templates/pages/CreateTemplatePage';
-import { EditTemplatePage } from '@/features/templates/pages/EditTemplatePage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -99,45 +95,6 @@ function AppContent() {
               </ProtectedRoute>
             } />
             
-            <Route path="/templates" element={
-              <ProtectedRoute>
-                <RoleGuard allowedRoles={['clinician', 'admin']}>
-                  <Layout>
-                    <TemplatesPage />
-                  </Layout>
-                </RoleGuard>
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/templates/create" element={
-              <ProtectedRoute>
-                <RoleGuard allowedRoles={['clinician', 'admin']}>
-                  <Layout>
-                    <CreateTemplatePage />
-                  </Layout>
-                </RoleGuard>
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/templates/:id/edit" element={
-              <ProtectedRoute>
-                <RoleGuard allowedRoles={['clinician', 'admin']}>
-                  <Layout>
-                    <EditTemplatePage />
-                  </Layout>
-                </RoleGuard>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/templates/session-documentation" element={
-              <ProtectedRoute>
-                <RoleGuard allowedRoles={['clinician', 'admin']}>
-                  <Layout>
-                    <SessionDocumentation />
-                  </Layout>
-                </RoleGuard>
-              </ProtectedRoute>
-            } />
             
             <Route path="/profile" element={
               <ProtectedRoute>

@@ -441,8 +441,8 @@ const StaffManagement = () => {
                 {clinician.phone || '—'}
               </div>
               <div>
-                <Badge variant={getStatusVariant(clinician.clinician_accepting_new_clients)}>
-                  {getStatusText(clinician.clinician_accepting_new_clients)}
+                <Badge variant={getStatusVariant(clinician.accepting_new_clients)}>
+                  {getStatusText(clinician.accepting_new_clients)}
                 </Badge>
               </div>
               <div>

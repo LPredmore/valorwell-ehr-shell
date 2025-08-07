@@ -20,6 +20,7 @@ export type Database = {
           appointment_id: string
           changed_at: string | null
           changed_by: string | null
+          clinic_taxid: string | null
           id: string
           new_data: Json | null
           old_data: Json | null
@@ -30,6 +31,7 @@ export type Database = {
           appointment_id: string
           changed_at?: string | null
           changed_by?: string | null
+          clinic_taxid?: string | null
           id?: string
           new_data?: Json | null
           old_data?: Json | null
@@ -40,6 +42,7 @@ export type Database = {
           appointment_id?: string
           changed_at?: string | null
           changed_by?: string | null
+          clinic_taxid?: string | null
           id?: string
           new_data?: Json | null
           old_data?: Json | null
@@ -107,6 +110,7 @@ export type Database = {
           client_id: string
           client_name: string | null
           client_timezone: Database["public"]["Enums"]["time_zones"] | null
+          clinic_taxid: string | null
           clinician_email: string | null
           clinician_id: string
           clinician_name: string | null
@@ -137,6 +141,7 @@ export type Database = {
           client_id: string
           client_name?: string | null
           client_timezone?: Database["public"]["Enums"]["time_zones"] | null
+          clinic_taxid?: string | null
           clinician_email?: string | null
           clinician_id: string
           clinician_name?: string | null
@@ -167,6 +172,7 @@ export type Database = {
           client_id?: string
           client_name?: string | null
           client_timezone?: Database["public"]["Enums"]["time_zones"] | null
+          clinic_taxid?: string | null
           clinician_email?: string | null
           clinician_id?: string
           clinician_name?: string | null
@@ -208,6 +214,7 @@ export type Database = {
           claims_state: string | null
           claims_zip: string | null
           client_id: string
+          clinic_taxid: string | null
           condition_auto_accident: boolean | null
           condition_employment: boolean | null
           condition_other_accident: boolean | null
@@ -254,6 +261,7 @@ export type Database = {
           claims_state?: string | null
           claims_zip?: string | null
           client_id: string
+          clinic_taxid?: string | null
           condition_auto_accident?: boolean | null
           condition_employment?: boolean | null
           condition_other_accident?: boolean | null
@@ -300,6 +308,7 @@ export type Database = {
           claims_state?: string | null
           claims_zip?: string | null
           client_id?: string
+          clinic_taxid?: string | null
           condition_auto_accident?: boolean | null
           condition_employment?: boolean | null
           condition_other_accident?: boolean | null
@@ -999,6 +1008,7 @@ export type Database = {
           charge: number
           claim_md_batch_id: string | null
           claim_md_id: string | null
+          clinic_taxid: string | null
           created_at: string | null
           diag_1: string | null
           diag_10: string | null
@@ -1075,6 +1085,7 @@ export type Database = {
           charge: number
           claim_md_batch_id?: string | null
           claim_md_id?: string | null
+          clinic_taxid?: string | null
           created_at?: string | null
           diag_1?: string | null
           diag_10?: string | null
@@ -1151,6 +1162,7 @@ export type Database = {
           charge?: number
           claim_md_batch_id?: string | null
           claim_md_id?: string | null
+          clinic_taxid?: string | null
           created_at?: string | null
           diag_1?: string | null
           diag_10?: string | null
@@ -1263,6 +1275,7 @@ export type Database = {
         Row: {
           appointment_id: string | null
           client_id: string
+          clinic_taxid: string | null
           clinician_id: string
           created_at: string
           form_data: Json
@@ -1274,6 +1287,7 @@ export type Database = {
         Insert: {
           appointment_id?: string | null
           client_id: string
+          clinic_taxid?: string | null
           clinician_id: string
           created_at?: string
           form_data: Json
@@ -1285,6 +1299,7 @@ export type Database = {
         Update: {
           appointment_id?: string | null
           client_id?: string
+          clinic_taxid?: string | null
           clinician_id?: string
           created_at?: string
           form_data?: Json
@@ -1604,6 +1619,7 @@ export type Database = {
         Row: {
           access_token: string
           account_id: string
+          clinic_taxid: string | null
           created_at: string
           expires_at: string | null
           id: string
@@ -1613,6 +1629,7 @@ export type Database = {
         Insert: {
           access_token: string
           account_id: string
+          clinic_taxid?: string | null
           created_at?: string
           expires_at?: string | null
           id?: string
@@ -1622,6 +1639,7 @@ export type Database = {
         Update: {
           access_token?: string
           account_id?: string
+          clinic_taxid?: string | null
           created_at?: string
           expires_at?: string | null
           id?: string
@@ -1634,6 +1652,7 @@ export type Database = {
         Row: {
           account_id: string
           calendar_id: string
+          clinic_taxid: string | null
           created_at: string
           description: string | null
           event_id: string
@@ -1649,6 +1668,7 @@ export type Database = {
         Insert: {
           account_id: string
           calendar_id: string
+          clinic_taxid?: string | null
           created_at?: string
           description?: string | null
           event_id: string
@@ -1664,6 +1684,7 @@ export type Database = {
         Update: {
           account_id?: string
           calendar_id?: string
+          clinic_taxid?: string | null
           created_at?: string
           description?: string | null
           event_id?: string
@@ -1681,6 +1702,7 @@ export type Database = {
       practiceinfo: {
         Row: {
           banner_url: string | null
+          clinic_taxid: string | null
           created_at: string
           id: string
           logo_url: string | null
@@ -1700,6 +1722,7 @@ export type Database = {
         }
         Insert: {
           banner_url?: string | null
+          clinic_taxid?: string | null
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -1719,6 +1742,7 @@ export type Database = {
         }
         Update: {
           banner_url?: string | null
+          clinic_taxid?: string | null
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -1770,6 +1794,7 @@ export type Database = {
       }
       templates: {
         Row: {
+          clinic_taxid: string | null
           created_at: string
           created_by: string
           description: string | null
@@ -1780,6 +1805,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          clinic_taxid?: string | null
           created_at?: string
           created_by: string
           description?: string | null
@@ -1790,6 +1816,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          clinic_taxid?: string | null
           created_at?: string
           created_by?: string
           description?: string | null

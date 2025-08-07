@@ -1,13 +1,13 @@
 import React from 'react';
-import { IframeContainer } from '@/components/IframeContainer';
 
 export const ClinicianProfile: React.FC = () => {
   return (
-    <div className="container mx-auto p-6 max-w-full">
-      <IframeContainer 
+    <div className="container mx-auto p-6 max-w-full h-full">
+      <iframe
+        src="https://valorwell-ehr-staff-profile.lovable.app/"
         title="Clinician Profile Management"
-        initialSrc=""
-        allowFullscreen={true}
+        className="w-full h-full border-0 rounded-lg"
+        allowFullScreen={true}
         sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
       />
     </div>

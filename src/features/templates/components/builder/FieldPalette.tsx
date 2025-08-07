@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { DataBoundFieldPalette } from './DataBoundFieldPalette';
+
 
 interface DraggableFieldProps {
   fieldType: typeof FIELD_TYPES[0];
@@ -102,8 +102,6 @@ export function FieldPalette() {
             </div>
           ))}
           
-          {/* Data-bound field categories */}
-          <DataBoundFieldPalette />
         </div>
       </ScrollArea>
     </div>

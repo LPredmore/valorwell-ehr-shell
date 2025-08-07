@@ -18,7 +18,7 @@ import { useCptCodes, useDeleteCptCode, useUpdateCptCode, CptCode } from '@/hook
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronRight } from 'lucide-react';
-import { InsuranceManagement } from '@/components/insurance/InsuranceManagement';
+
 
 const CptCodesManagement = () => {
   const { data: cptCodes, isLoading } = useCptCodes();
@@ -752,7 +752,7 @@ const Settings = () => {
         <TabsContent value="billing" className="mt-6">
           <div className="space-y-6">
             <CptCodesManagement />
-            <InsuranceManagement />
+            
           </div>
         </TabsContent>
 

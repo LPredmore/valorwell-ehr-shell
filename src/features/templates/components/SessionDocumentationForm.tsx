@@ -9,7 +9,7 @@ import { convertToSurveyJS } from '../components/builder/utils/schemaConverter';
 import { FormContext, FormData } from '../types/formContext';
 import { useFormData } from '../hooks/useFormData';
 import { useFormSubmission } from '../hooks/useFormSubmission';
-import { useUpdateAppointment } from '@/features/calendar/hooks/useAppointments';
+import { useUpdateAppointment } from '@/hooks/useAppointments';
 import { useToast } from '@/hooks/use-toast';
 import { logger, performanceLogger } from '@/utils/loggingService';
 import { templateDebugger } from '@/utils/templateDebugger';

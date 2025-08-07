@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, Video, FileText, Clock, AlertCircle, Plus, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { useAppointments } from '@/features/calendar/hooks/useAppointments';
+import { useAppointments } from '@/hooks/useAppointments';
 import { useProfile } from '@/hooks/useProfile';
 import { useClinicians } from '@/hooks/useClinicians';
 import { Link } from 'react-router-dom';

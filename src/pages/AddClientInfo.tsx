@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAcceptedInsurance } from '@/hooks/useInsurance';
 import { useClientInsurance, useCreateClientInsurance, useUpdateClientInsurance, ClientInsurance } from '@/hooks/useClientInsurance';
-import { InsuranceFormSection } from '@/components/insurance/InsuranceFormSection';
+
 import type { Database } from '@/integrations/supabase/types';
 
 export const AddClientInfo: React.FC = () => {
@@ -857,46 +857,13 @@ export const AddClientInfo: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Insurance Sections - Only show if user wants insurance */}
+                {/* Insurance section simplified - complex insurance form removed */}
                 {wantInsurance === true && (
-                  <>
-                    {/* Primary Insurance Section */}
-                    <InsuranceFormSection
-                      insuranceType="primary"
-                      selectedInsurance={selectedPrimaryInsurance}
-                      insuranceData={primaryInsuranceData}
-                      onInsuranceSelect={handlePrimaryInsuranceSelect}
-                      onFieldChange={handlePrimaryInsuranceFieldChange}
-                    />
-
-                    {/* Add Secondary Insurance Button */}
-                    {!showSecondaryInsurance && (
-                      <div className="flex justify-center pt-4">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setShowSecondaryInsurance(true)}
-                          className="flex items-center gap-2"
-                        >
-                          <Plus className="h-4 w-4" />
-                          Add Secondary/Supplemental Insurance
-                        </Button>
-                      </div>
-                    )}
-
-                    {/* Secondary Insurance Section */}
-                    {showSecondaryInsurance && (
-                      <div className="border-t pt-8">
-                        <InsuranceFormSection
-                          insuranceType="secondary"
-                          selectedInsurance={selectedSecondaryInsurance}
-                          insuranceData={secondaryInsuranceData}
-                          onInsuranceSelect={handleSecondaryInsuranceSelect}
-                          onFieldChange={handleSecondaryInsuranceFieldChange}
-                        />
-                      </div>
-                    )}
-                  </>
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      Insurance functionality has been simplified. Please contact your practice for insurance setup.
+                    </p>
+                  </div>
                 )}
 
                 {/* Out-of-Pocket Section - Only show if user doesn't want insurance */}

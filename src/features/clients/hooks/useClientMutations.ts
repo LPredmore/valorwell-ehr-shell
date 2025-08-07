@@ -12,13 +12,13 @@ interface ClientData {
   email?: string;
   phone?: string;
   date_of_birth?: string;
-  gender?: string;
+  gender?: 'Male' | 'Female';
   address?: string;
   city?: string;
   state?: string;
   zip_code?: string;
   time_zone?: string;
-  status?: Database['public']['Enums']['client_status'];
+  status?: 'Active' | 'Inactive' | 'Pending';
   assigned_therapist?: string;
   referral_source?: string;
   treatmentgoal?: string;
@@ -76,7 +76,7 @@ export const useUpdateClient = (clientId: string) => {
     mutationFn: async (clientData: Partial<ClientData>) => {
       const { data, error } = await supabase
         .from('clients')
-        .update(clientData)
+        .update(clientData as any)
         .eq('id', clientId)
         .select()
         .single();
@@ -116,7 +116,7 @@ export const useUpsertClients = () => {
     mutationFn: async (clients: ClientDataWithId[]) => {
       const { data, error } = await supabase
         .from('clients')
-        .upsert(clients, { onConflict: 'id' })
+        .upsert(clients as any, { onConflict: 'id' })
         .select();
 
       if (error) throw error;

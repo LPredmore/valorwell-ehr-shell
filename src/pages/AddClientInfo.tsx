@@ -105,36 +105,36 @@ export const AddClientInfo: React.FC = () => {
     if (clientData) {
       setFormData(prev => ({
         ...prev,
-        client_first_name: clientData.client_first_name || '',
-        client_last_name: clientData.client_last_name || '', 
-        client_email: clientData.client_email || user?.email || '',
-        client_preferred_name: clientData.client_preferred_name || '',
-        client_middle_name: clientData.client_middle_name || '',
-        client_address: clientData.client_address || '',
-        client_city: clientData.client_city || '',
+        first_name: clientData.first_name || '',
+        last_name: clientData.last_name || '', 
+        email: clientData.email || user?.email || '',
+        preferred_name: clientData.preferred_name || '',
+        middle_name: clientData.middle_name || '',
+        address: clientData.address || '',
+        city: clientData.city || '',
         state: clientData.state || '',
-        client_zip_code: clientData.client_zip_code || '',
-        client_phone: clientData.client_phone || '',
+        zip_code: clientData.zip_code || '',
+        phone: clientData.phone || '',
         date_of_birth: clientData.date_of_birth || '',
-        client_gender: clientData.client_gender || '',
-        client_gender_identity: clientData.client_gender_identity || '',
-        client_time_zone: clientData.client_time_zone || 'America/New_York',
-        client_minor: clientData.client_minor || 'No',
-        client_referral_source: clientData.client_referral_source || '',
-        client_self_goal: clientData.client_self_goal || '',
-        client_status: clientData.client_status || 'Active',
-        client_planlength: clientData.client_planlength || '',
-        client_treatmentfrequency: clientData.client_treatmentfrequency || '',
-        client_problem: clientData.client_problem || '',
-        client_treatmentgoal: clientData.client_treatmentgoal || '',
-        client_primaryobjective: clientData.client_primaryobjective || '',
-        client_intervention1: clientData.client_intervention1 || '',
-        client_secondaryobjective: clientData.client_secondaryobjective || '',
-        client_intervention2: clientData.client_intervention2 || '',
+        gender: clientData.gender || '',
+        gender_identity: clientData.gender_identity || '',
+        time_zone: clientData.time_zone || 'America/New_York',
+        minor: clientData.minor || false,
+        referral_source: clientData.referral_source || '',
+        self_goal: clientData.self_goal || '',
+        status: clientData.status || 'Active',
+        planlength: clientData.planlength || '',
+        treatmentfrequency: clientData.treatmentfrequency || '',
+        problem: clientData.problem || '',
+        treatmentgoal: clientData.treatmentgoal || '',
+        primaryobjective: clientData.primaryobjective || '',
+        intervention1: clientData.intervention1 || '',
+        secondaryobjective: clientData.secondaryobjective || '',
+        intervention2: clientData.intervention2 || '',
       }));
       
       // Set SSN and insurance preference if they exist
-      setClientSSN((clientData as any).client_ssn || '');
+      setClientSSN((clientData as any).ssn || '');
       if ((clientData as any).wants_insurance !== null && (clientData as any).wants_insurance !== undefined) {
         setWantInsurance((clientData as any).wants_insurance);
       }
@@ -363,7 +363,7 @@ export const AddClientInfo: React.FC = () => {
       const { error: clientError } = await supabase
         .from('clients')
         .update({
-          client_ssn: ssnDigits,
+          ssn: ssnDigits,
         })
         .eq('profile_id', user.id);
 

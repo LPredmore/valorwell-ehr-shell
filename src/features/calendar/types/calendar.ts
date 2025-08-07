@@ -19,9 +19,9 @@ export interface AppointmentEvent {
     recurring_group_id?: string;
     video_room_url?: string;
     clients: {
-      client_first_name: string;
-      client_last_name: string;
-      client_email: string;
+      first_name: string;
+      last_name: string;
+      email: string;
     };
   };
 }

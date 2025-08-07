@@ -8,6 +8,9 @@ import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { RoleGuard } from '@/components/RoleGuard';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { DebugPanel } from '@/components/DebugPanel';
+import { useRouteTracking } from '@/hooks/useUsageTracking';
+import { useDebugPanel } from '@/hooks/useDebugPanel';
 
 // Page imports
 import Index from '@/pages/Index';
@@ -39,14 +42,15 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+function AppContent() {
+  useRouteTracking();
+  const debugPanel = useDebugPanel();
+  
   return (
-    <ErrorBoundary context="App Root">
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BrowserRouter>
-            <Toaster />
-            <Routes>
+    <>
+      <Toaster />
+      <DebugPanel isOpen={debugPanel.isOpen} onClose={debugPanel.close} />
+      <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/add-client-info" element={
@@ -170,7 +174,18 @@ function App() {
             } />
             
             <Route path="*" element={<NotFound />} />
-            </Routes>
+      </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary context="App Root">
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppContent />
           </BrowserRouter>
         </AuthProvider>
       </QueryClientProvider>

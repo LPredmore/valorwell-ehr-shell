@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react';
-
 const RemoteProfileApp = React.lazy(() => import('staffProfile/ProfileApp'));
 
 const ProfileMF: React.FC = () => (
@@ -9,5 +8,4 @@ const ProfileMF: React.FC = () => (
     </Suspense>
   </div>
 );
-
 export default ProfileMF;

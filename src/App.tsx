@@ -96,13 +96,16 @@ function AppContent() {
             } />
             
             
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Layout>
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute>
+                  {/* old iframe-based Profile */}
+                  <ProfileIframe />
                   <ProfileMF />
-                </Layout>
-              </ProtectedRoute>
-            } />
+                </ProtectedRoute>
+              }
+            />
             
             <Route path="/clinician-profile" element={
               <ProtectedRoute>

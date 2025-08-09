@@ -100,8 +100,6 @@ function AppContent() {
               path="profile"
               element={
                 <ProtectedRoute>
-                  {/* old iframe-based Profile */}
-                  <ProfileIframe />
                   <ProfileMF />
                 </ProtectedRoute>
               }

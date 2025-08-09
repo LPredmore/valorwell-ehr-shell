@@ -13,7 +13,11 @@ export default defineConfig({
       remotes: {
         staffProfile: 'https://valorwell-ehr-staff-profile.lovable.app/remoteEntry.js',
       },
-      shared: ['react', 'react-dom', '@tanstack/react-query'],
+      shared: {
+        react: { singleton: true, eager: true },
+        'react-dom': { singleton: true, eager: true },
+        '@tanstack/react-query': { singleton: true, eager: true },
+      } as any,
     }),
   ],
   build: {
@@ -23,7 +27,7 @@ export default defineConfig({
     minify: false,
   },
   server: {
-    port: 5173,
+    port: 8080,
   },
   preview: {
     port: 4173,

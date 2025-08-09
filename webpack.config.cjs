@@ -32,7 +32,7 @@ module.exports = {
       shared: {
         react: { singleton: true, eager: true },
         'react-dom': { singleton: true, eager: true },
-        '@tanstack/react-query': { singleton: true }
+        '@tanstack/react-query': { singleton: true, eager: true }
       }
     }),
     new HtmlWebpackPlugin({ template: './public/index.html' })

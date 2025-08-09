@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "webpack serve --config webpack.config.cjs",
-  "build": "webpack --config webpack.config.cjs",
-  "build:dev": "vite build --mode development",
-  "preview": "webpack serve --config webpack.config.cjs --mode production",
-  "lint": "eslint ."
-},
+    "dev": "webpack serve --config webpack.config.cjs",
+    "build": "webpack --config webpack.config.cjs",
+    "build:dev": "vite build --mode development",
+    "preview": "webpack serve --config webpack.config.cjs --mode production",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",

@@ -224,6 +224,9 @@ const StaffManagement = () => {
   const deleteClinician = useDeleteClinician();
   const { toast } = useToast();
   const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteFirstName, setInviteFirstName] = useState('');
+  const [inviteLastName, setInviteLastName] = useState('');
+  const [invitePhone, setInvitePhone] = useState('');
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
   const [isInviting, setIsInviting] = useState(false);
 
@@ -259,95 +262,63 @@ const StaffManagement = () => {
       return;
     }
 
+    if (!inviteFirstName.trim() || !inviteLastName.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter both first and last name.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsInviting(true);
     console.log('🔄 [STAFF_INVITE] Set inviting state to true');
     
     try {
-      // Generate a random password for the new clinician
-      const generatedPassword = crypto.randomUUID();
-      console.log('🔑 [STAFF_INVITE] Generated password (length):', generatedPassword.length);
-      console.log('🔑 [STAFF_INVITE] Generated password (first 8 chars):', generatedPassword.substring(0, 8) + '...');
+      console.log('🚀 [STAFF_INVITE] Calling create-staff-user edge function...');
+      const startTime = Date.now();
       
-      // Prepare the signup data
-      const signUpData = {
-        email: inviteEmail,
-        password: generatedPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            role: 'clinician',
-            password: generatedPassword // Pass password in metadata for storage
-          }
-        }
-      };
-      
-      console.log('📝 [STAFF_INVITE] Signup data prepared:', {
-        email: signUpData.email,
-        password: signUpData.password.substring(0, 8) + '...',
-        options: {
-          emailRedirectTo: signUpData.options.emailRedirectTo,
-          data: {
-            role: signUpData.options.data.role,
-            password: signUpData.options.data.password.substring(0, 8) + '...'
-          }
+      const { data, error } = await supabase.functions.invoke('create-staff-user', {
+        body: {
+          email: inviteEmail,
+          firstName: inviteFirstName,
+          lastName: inviteLastName,
+          phone: invitePhone
         }
       });
       
-      console.log('🚀 [STAFF_INVITE] Calling supabase.auth.signUp...');
-      const startTime = Date.now();
-      
-      const { data, error } = await supabase.auth.signUp(signUpData);
-      
       const endTime = Date.now();
-      console.log(`⏱️ [STAFF_INVITE] signUp completed in ${endTime - startTime}ms`);
+      console.log(`⏱️ [STAFF_INVITE] Edge function completed in ${endTime - startTime}ms`);
       
       if (error) {
-        console.error('❌ [STAFF_INVITE] Supabase auth.signUp error:', {
-          message: error.message,
-          status: error.status,
-          code: error.code || 'no_code',
-          details: error
-        });
-        
+        console.error('❌ [STAFF_INVITE] Edge function error:', error);
         toast({
           title: "Invitation Failed",
           description: error.message,
           variant: "destructive",
         });
       } else {
-        console.log('✅ [STAFF_INVITE] Supabase auth.signUp success:', {
-          user_id: data.user?.id,
-          user_email: data.user?.email,
-          user_created_at: data.user?.created_at,
-          session: data.session ? 'present' : 'null'
-        });
-        
-        // Log the user metadata that was stored
-        if (data.user?.user_metadata) {
-          console.log('📋 [STAFF_INVITE] User metadata stored:', data.user.user_metadata);
-        }
+        console.log('✅ [STAFF_INVITE] Staff member created successfully:', data);
         
         toast({
-          title: "Invitation Sent",
-          description: `An invitation has been sent to ${inviteEmail}`,
+          title: "Staff Member Added",
+          description: `${inviteFirstName} ${inviteLastName} has been added to your practice. Temporary password: ${data.temporaryPassword}`,
         });
         
         console.log('✅ [STAFF_INVITE] Toast notification sent successfully');
         setInviteEmail('');
+        setInviteFirstName('');
+        setInviteLastName('');
+        setInvitePhone('');
         setIsInviteDialogOpen(false);
-        console.log('🔄 [STAFF_INVITE] UI state reset - email cleared, dialog closed');
+        console.log('🔄 [STAFF_INVITE] UI state reset - form cleared, dialog closed');
       }
     } catch (error) {
-      console.error('💥 [STAFF_INVITE] Unexpected error during invitation process:', {
-        name: error?.name || 'unknown',
-        message: error?.message || 'no message',
-        stack: error?.stack || 'no stack',
-        error: error
-      });
+      console.error('💥 [STAFF_INVITE] Unexpected error during invitation process:', error);
       
       toast({
         title: "Error",
-        description: "Failed to send invitation. Please try again.",
+        description: "Failed to add staff member. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -384,9 +355,33 @@ const StaffManagement = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Invite Clinician to your Practice</DialogTitle>
+              <DialogTitle>Add Staff Member to Practice</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="inviteFirstName">First Name</Label>
+                  <Input
+                    id="inviteFirstName"
+                    type="text"
+                    placeholder="Enter first name"
+                    value={inviteFirstName}
+                    onChange={(e) => setInviteFirstName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="inviteLastName">Last Name</Label>
+                  <Input
+                    id="inviteLastName"
+                    type="text"
+                    placeholder="Enter last name"
+                    value={inviteLastName}
+                    onChange={(e) => setInviteLastName(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="inviteEmail">Email</Label>
                 <Input
@@ -398,12 +393,22 @@ const StaffManagement = () => {
                   required
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="invitePhone">Phone (Optional)</Label>
+                <Input
+                  id="invitePhone"
+                  type="tel"
+                  placeholder="Enter phone number"
+                  value={invitePhone}
+                  onChange={(e) => setInvitePhone(e.target.value)}
+                />
+              </div>
               <Button
                 onClick={handleSendInvite}
-                disabled={!isValidEmail(inviteEmail) || isInviting}
+                disabled={!isValidEmail(inviteEmail) || !inviteFirstName.trim() || !inviteLastName.trim() || isInviting}
                 className="w-full"
               >
-                {isInviting ? 'Sending...' : 'Send Invite'}
+                {isInviting ? 'Adding Staff Member...' : 'Add Staff Member'}
               </Button>
             </div>
           </DialogContent>

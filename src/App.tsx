@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -28,7 +27,6 @@ import NotFound from '@/pages/NotFound';
 import { SessionDocumentation } from '@/pages/SessionDocumentation';
 import { AddClientInfo } from '@/pages/AddClientInfo';
 import ClientDashboard from '@/pages/ClientDashboard';
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -116,7 +114,7 @@ function AppContent() {
             
             <Route path="/staff-profile/*" element={
               <ProtectedRoute>
-                <RoleGuard allowedRoles={['admin', 'clinician', 'staff']}>
+                <RoleGuard allowedRoles={['admin', 'clinician']}>
                   <Layout>
                     <StaffProfile />
                   </Layout>

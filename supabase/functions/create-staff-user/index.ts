@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     
     console.log('🔑 Generated password (length):', generatedPassword.length)
 
-    // Create the auth user
+    // Create the auth user with metadata that will trigger the handle_new_user function
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: generatedPassword,
@@ -51,34 +51,26 @@ Deno.serve(async (req) => {
 
     console.log('✅ Auth user created successfully:', authUser.user.id)
 
-    // Update the profiles table
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .update({
-        role: ['clinician'],
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', authUser.user.id)
+    // The handle_new_user trigger should have automatically created the profile and clinician records
+    // Let's verify the clinician record was created and update it with additional fields
+    const { data: clinician, error: clinicianFetchError } = await supabaseAdmin
+      .from('clinicians')
+      .select('*')
+      .eq('profile_id', authUser.user.id)
+      .single()
 
-    if (profileError) {
-      console.error('❌ Profile update failed:', profileError)
+    if (clinicianFetchError) {
+      console.error('❌ Failed to fetch created clinician:', clinicianFetchError)
       return new Response(
-        JSON.stringify({ error: 'Failed to update profile', details: profileError }),
+        JSON.stringify({ error: 'Failed to verify clinician creation', details: clinicianFetchError }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    console.log('✅ Profile updated successfully')
-
-    // Create clinician record with the generated password
-    const { error: clinicianError } = await supabaseAdmin
+    // Update the clinician record with additional default fields
+    const { error: clinicianUpdateError } = await supabaseAdmin
       .from('clinicians')
-      .insert({
-        id: crypto.randomUUID(),
-        profile_id: authUser.user.id,
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
+      .update({
         professional_name: `${firstName} ${lastName}`,
         type: 'Clinician',
         accepting_new_clients: true,
@@ -89,20 +81,19 @@ Deno.serve(async (req) => {
         calendar_end_time: '17:00:00',
         max_advance_days: 30,
         min_notice_days: 1,
-        temppassword: generatedPassword,
-        created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
+      .eq('profile_id', authUser.user.id)
 
-    if (clinicianError) {
-      console.error('❌ Clinician creation failed:', clinicianError)
+    if (clinicianUpdateError) {
+      console.error('❌ Clinician update failed:', clinicianUpdateError)
       return new Response(
-        JSON.stringify({ error: 'Failed to create clinician record', details: clinicianError }),
+        JSON.stringify({ error: 'Failed to update clinician record', details: clinicianUpdateError }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    console.log('✅ Clinician record created successfully with temporary password')
+    console.log('✅ Clinician record updated successfully with additional fields')
 
     return new Response(
       JSON.stringify({ 

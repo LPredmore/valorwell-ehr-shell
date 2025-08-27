@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -1840,9 +1840,9 @@ export type Database = {
       check_appointment_conflicts: {
         Args: {
           p_clinician_id: string
-          p_start_at: string
           p_end_at: string
           p_exclude_appointment_id?: string
+          p_start_at: string
         }
         Returns: boolean
       }

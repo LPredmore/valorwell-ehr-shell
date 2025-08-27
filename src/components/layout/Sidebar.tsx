@@ -10,11 +10,13 @@ import {
   Home,
   Calendar,
   FileText,
+  User,
 } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Profile', href: '/clinician-profile', icon: Settings },
+  { name: 'Staff Profile', href: '/staff-profile', icon: User },
   { name: 'Calendar', href: '/calendar', icon: Calendar },
   { name: 'Clients', href: '/clients', icon: Users },
   // { name: 'Billing', href: '/billing', icon: CreditCard },

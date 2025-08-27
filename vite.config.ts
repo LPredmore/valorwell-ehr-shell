@@ -1,35 +1,22 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import federation from '@originjs/vite-plugin-federation';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-// Vite configuration with Module Federation to consume the staffProfile remote
-export default defineConfig({
-  plugins: [
-    react(),
-    tsconfigPaths(),
-    federation({
-      name: 'shell',
-      remotes: {
-        staffProfile: 'https://valorwell-ehr-staff-profile.lovable.app/remoteEntry.js',
-      },
-      shared: {
-        react: { singleton: true, eager: true },
-        'react-dom': { singleton: true, eager: true },
-        '@tanstack/react-query': { singleton: true, eager: true },
-      } as any,
-    }),
-  ],
-  build: {
-    target: 'esnext',
-    modulePreload: false,
-    cssCodeSplit: true,
-    minify: false,
-  },
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
   server: {
+    host: "::",
     port: 8080,
   },
-  preview: {
-    port: 4173,
+  plugins: [
+    react(),
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
-});
+}));

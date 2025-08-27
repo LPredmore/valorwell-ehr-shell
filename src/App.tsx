@@ -20,7 +20,7 @@ import { Dashboard } from '@/pages/Dashboard';
 import Clients from '@/pages/Clients';
 import ClientDetails from '@/pages/ClientDetails';
 import Calendar from '@/pages/Calendar';
-import ProfileMF from '@/pages/ProfileMF';
+import { Profile } from '@/pages/Profile';
 import { ClinicianProfile } from '@/pages/ClinicianProfile';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
@@ -96,14 +96,13 @@ function AppContent() {
             } />
             
             
-            <Route
-              path="profile"
-              element={
-                <ProtectedRoute>
-                  <ProfileMF />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Profile />
+                </Layout>
+              </ProtectedRoute>
+            } />
             
             <Route path="/clinician-profile" element={
               <ProtectedRoute>

@@ -2,8 +2,10 @@
  * Iframe container component for micro-app system
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useUsageTracking } from '@/hooks/useUsageTracking';
+import { useAuth } from '@/context/AuthContext';
+import { messageHandler } from '@/utils/iframeMessageHandler';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +25,8 @@ export const IframeContainer: React.FC<IframeContainerProps> = ({
   sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups'
 }) => {
   const { logAction, logError } = useUsageTracking('IframeContainer');
+  const { user, session } = useAuth();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [src, setSrc] = useState(initialSrc);
   const [inputUrl, setInputUrl] = useState(initialSrc);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +42,42 @@ export const IframeContainer: React.FC<IframeContainerProps> = ({
     setIsLoading(false);
     setError(null);
     logAction('iframe_loaded', { url: src });
+
+    // Send authentication to iframe if user is available
+    if (iframeRef.current && user && session) {
+      console.log('[IframeContainer] Iframe loaded, preparing to send auth data:', {
+        userId: user.id,
+        email: user.email,
+        hasToken: !!session.access_token,
+        url: src
+      });
+
+      // Give iframe time to set up listeners before sending auth
+      setTimeout(() => {
+        if (iframeRef.current) {
+          const authData = {
+            user: {
+              id: user.id,
+              email: user.email,
+              role: user.user_metadata?.role || 'clinician'
+            },
+            token: session.access_token,
+            isAuthenticated: true,
+            timestamp: new Date().toISOString()
+          };
+
+          console.log('[IframeContainer] Sending auth-state message to iframe:', authData);
+          messageHandler.sendMessage(iframeRef.current, 'auth-state', authData);
+        }
+      }, 1000);
+    } else {
+      console.log('[IframeContainer] Iframe loaded but auth not ready:', {
+        hasIframe: !!iframeRef.current,
+        hasUser: !!user,
+        hasSession: !!session,
+        url: src
+      });
+    }
   };
 
   const handleError = () => {
@@ -130,6 +170,7 @@ export const IframeContainer: React.FC<IframeContainerProps> = ({
               </div>
             )}
             <iframe
+              ref={iframeRef}
               src={src}
               title={title}
               className="w-full h-full border-0"

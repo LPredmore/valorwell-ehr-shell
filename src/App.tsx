@@ -20,7 +20,6 @@ import Clients from '@/pages/Clients';
 import ClientDetails from '@/pages/ClientDetails';
 import Calendar from '@/pages/Calendar';
 import { Profile } from '@/pages/Profile';
-import { ClinicianProfile } from '@/pages/ClinicianProfile';
 import { StaffProfile } from '@/pages/StaffProfile';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
@@ -102,15 +101,6 @@ function AppContent() {
               </ProtectedRoute>
             } />
             
-            <Route path="/clinician-profile" element={
-              <ProtectedRoute>
-                <RoleGuard allowedRoles={['clinician', 'admin']}>
-                  <Layout>
-                    <ClinicianProfile />
-                  </Layout>
-                </RoleGuard>
-              </ProtectedRoute>
-            } />
             
             <Route path="/staff-profile/*" element={
               <ProtectedRoute>

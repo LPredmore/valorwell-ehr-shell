@@ -34,7 +34,7 @@ export const useClinicians = () => {
           .from('clinicians')
           .select(`
             *,
-            profiles!inner(email)
+            profiles!profile_id(email)
           `)
           .order('created_at', { ascending: false });
 

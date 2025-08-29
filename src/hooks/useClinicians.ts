@@ -32,10 +32,7 @@ export const useClinicians = () => {
       try {
         const { data, error } = await supabase
           .from('clinicians')
-          .select(`
-            *,
-            profiles!profile_id(email)
-          `)
+          .select('*')
           .order('created_at', { ascending: false });
 
         if (error) {
@@ -43,13 +40,13 @@ export const useClinicians = () => {
           throw error;
         }
 
-        // Transform the data to flatten the email from profiles
+        // Transform the data to match Clinician interface (without email from profiles)
         const transformedData: Clinician[] = data?.map((clinician: any) => ({
           id: clinician.id,
           profile_id: clinician.profile_id,
           first_name: clinician.first_name,
           last_name: clinician.last_name,
-          email: clinician.profiles?.email || '',
+          email: '', // Email not available without profile join
           phone: clinician.phone,
           accepting_new_clients: clinician.accepting_new_clients,
           created_at: clinician.created_at,

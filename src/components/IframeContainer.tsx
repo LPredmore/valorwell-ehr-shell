@@ -38,6 +38,36 @@ export const IframeContainer: React.FC<IframeContainerProps> = ({
     }
   }, [src, logAction]);
 
+  // Set up message listeners for iframe communication
+  useEffect(() => {
+    const handleRequestAuthState = (data: any, origin: string) => {
+      console.log('[IframeContainer] Iframe requesting auth state:', { data, origin });
+      
+      if (iframeRef.current && user && session) {
+        const authData = {
+          user: {
+            id: user.id,
+            email: user.email,
+            role: user.user_metadata?.role || 'clinician'
+          },
+          token: session.access_token,
+          isAuthenticated: true,
+          timestamp: new Date().toISOString()
+        };
+
+        console.log('[IframeContainer] Sending requested auth-state to iframe:', authData);
+        messageHandler.sendMessage(iframeRef.current, 'auth-state', authData);
+      }
+    };
+
+    // Register listener for auth state requests
+    messageHandler.on('request-auth-state', handleRequestAuthState);
+
+    return () => {
+      messageHandler.off('request-auth-state', handleRequestAuthState);
+    };
+  }, [user, session]);
+
   const handleLoad = () => {
     setIsLoading(false);
     setError(null);

@@ -35,6 +35,8 @@ export class IframeMessageHandler {
 
     // Add common development origins
     if (import.meta.env.DEV) {
+      this.trustedOrigins.add('http://localhost:8080');
+      this.trustedOrigins.add('http://127.0.0.1:8080');
       this.trustedOrigins.add('http://localhost:8081');
       this.trustedOrigins.add('http://127.0.0.1:8081');
       this.trustedOrigins.add('https://localhost:8081');

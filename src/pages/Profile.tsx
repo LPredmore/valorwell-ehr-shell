@@ -1,9 +1,11 @@
 import React from 'react';
 
 export const Profile: React.FC = () => {
+  // Get the staff profile URL from environment variables
+  const staffProfileUrl = import.meta.env.VITE_STAFF_PROFILE_URL || 'https://valorwell-custom-final.lovable.app';
+  
   // Add iframe-specific parameters to the URL
-  const iframeUrl = 'https://valorwell-ehr-staff-profile.lovable.app/?hideHeader=true&hideSidebar=true&parentOrigin=' + 
-                   encodeURIComponent(window.location.origin);
+  const iframeUrl = `${staffProfileUrl}/?hideHeader=true&hideSidebar=true&parentOrigin=${encodeURIComponent(window.location.origin)}`;
 
   return (
     <div className="h-full">
